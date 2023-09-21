@@ -30,7 +30,7 @@ class MaskinportenClient(private val log: Logger, private val environment: Appli
                     .type(JOSEObjectType.JWT)
                     .build(),
                 JWTClaimsSet.Builder()
-                    .audience(environment.config.property("maskinporten.audience").getString())
+                    .audience("https://test.maskinporten.no/")
                     .issuer(System.getenv().get("MASKINPORTEN_CLIENT_ID"))
                     .claim("scope", System.getenv().get("MASKINPORTEN_SCOPES"))
                     .issueTime(Date())
