@@ -1,4 +1,4 @@
-package aap.maskinportern.client
+package maskinportern.client
 
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
@@ -11,11 +11,10 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import io.ktor.server.application.*
 import java.util.*
 import io.ktor.util.logging.*
 
-class MaskinportenClient(private val log: Logger, private val environment: ApplicationEnvironment) {
+class MaskinportenClient(private val log: Logger) {
 
     private val httpClient = HttpClient(io.ktor.client.engine.java.Java)
     suspend fun getToken() :String {
