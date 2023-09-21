@@ -20,7 +20,8 @@ class MaskinportenClient(private val log: Logger, private val environment: Appli
     private val httpClient = HttpClient(io.ktor.client.engine.java.Java)
     suspend fun getToken() :String {
         val tokenUrl = System.getenv()["MASKINPORTEN_TOKEN_ENDPOINT"]!!
-        val response = httpClient.post(tokenUrl) {
+        val response = try {
+            httpClient.post(tokenUrl) {
 
             header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded)
             val rsaKey = RSAKey.parse(System.getenv()["MASKINPORTEN_CLIENT_JWK"])
@@ -42,12 +43,15 @@ class MaskinportenClient(private val log: Logger, private val environment: Appli
             val kropp = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer" + "&assertion=" + signedJWT.serialize()
             log.info("kaller maskinporten på $tokenUrl med body: $kropp")
             setBody(kropp)
+        }} catch (e:Exception){
+            log.error(e)
+            null
         }
 
-        val respons = response.body<String>()
+        val respons = response?.body<String>()
 
         log.info("Svar fra maskinporten: $respons")
-        return respons
+        return respons ?: "Bad Token"
     }
 
     fun twoMinutesFromDate(date: Date) :Date {
