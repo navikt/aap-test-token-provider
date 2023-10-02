@@ -1,6 +1,7 @@
 package maskinportern.client
 
 
+import com.auth0.jwt.algorithms.Algorithm
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
@@ -12,6 +13,7 @@ import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.ktor.util.logging.*
 import org.slf4j.LoggerFactory
+import java.time.LocalDate
 
 class SamtykkeClient() {
     private val jwkSet: JWKSet get() = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText())
@@ -21,7 +23,12 @@ class SamtykkeClient() {
         return createSignedJWT(rsaKey, JWTClaimsSet.Builder()
             .audience("https://samtykke")
             .issuer("samtykke")
-            .claim("scope", "samtykke")
+            .claim("Services", arrayOf("5252_1","5252_1_fraOgMed=01.01.2022","5252_1_tilOgMed=01.01.2024"))
+            .claim("OfferedBy", "1") //
+            .claim("CoveredBy", "1") //
+            .claim("DelegatedDate", LocalDate.now()) //
+            .claim("ValidToDate", LocalDate.now().plusYears(1)) //
+            .claim("scope",System.getenv().get("MASKINPORTEN_SCOPES"))
             .build()
         ).serialize()
     }
