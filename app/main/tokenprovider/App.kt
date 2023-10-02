@@ -56,7 +56,7 @@ fun Application.server() {
             get("/jwk") {
                 call.respond(jwkClient.getJwk())
             }
-            get(".well-known/oauth-authorization-server") {
+            get("/.well-known/oauth-authorization-server") {
                 call.respond(wellKnownProvider.getWellKnownOauth())
             }
         }
