@@ -11,8 +11,9 @@ import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import io.ktor.util.logging.*
+import org.slf4j.LoggerFactory
 
-class SamtykkeClient(private val log: Logger) {
+class SamtykkeClient() {
     private val jwkSet: JWKSet get() = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText())
     private val rsaKey: RSAKey get() = jwkSet.getKeyByKeyId("samtykke") as RSAKey
 

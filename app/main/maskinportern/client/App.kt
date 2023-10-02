@@ -24,7 +24,7 @@ fun Application.server() {
     }
 
     val maskinportenClient = MaskinportenClient(logger)
-    val samtykkeClient = SamtykkeClient(logger)
+    val samtykkeClient = SamtykkeClient()
 
     routing {
         route("/maskinporten") {
