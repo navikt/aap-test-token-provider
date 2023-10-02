@@ -5,15 +5,16 @@ import com.nimbusds.jose.jwk.JWKSet
 class SamtykkeJwk {
     fun getJwk():Jwk {
         //read from file jwkset.json and return Jwk
-        val jwkSet: JWKSet = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText())
-        return Jwk(alg = jwkSet.toJSONObject().get("alg").toString(),
-            e = jwkSet.toJSONObject().get("e").toString(),
-            kid = jwkSet.toJSONObject().get("kid").toString(),
-            kty = jwkSet.toJSONObject().get("kty").toString(),
-            n = jwkSet.toJSONObject().get("n").toString(),
-            use = jwkSet.toJSONObject().get("use").toString()
-        )
+        val map = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText()).getKeyByKeyId("samtykke").toJSONObject()
 
+        return Jwk(
+            alg = map.get("alg").toString(),
+            e = map.get("e").toString(),
+            kid = map.get("kid").toString(),
+            kty = map.get("kty").toString(),
+            n = map.get("n").toString(),
+            use = map.get("use").toString()
+        )
     }
 }
 
