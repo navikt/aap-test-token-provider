@@ -18,7 +18,7 @@ class SamtykkeTokenProvider {
 
     fun getToken() :String {
         return createSignedJWT(rsaKey, JWTClaimsSet.Builder()
-            .audience("https://samtykke")
+            .audience("https://aap-test-token-provider.intern.dev.nav.no")
             .issuer("samtykke")
             .claim("Services", arrayOf("5252_1","5252_1_fraOgMed=01.01.2022","5252_1_tilOgMed=01.01.2024"))
             .claim("OfferedBy", "1") //

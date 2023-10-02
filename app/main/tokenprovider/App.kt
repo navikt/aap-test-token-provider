@@ -15,6 +15,7 @@ import org.slf4j.LoggerFactory
 import tokenprovider.makinporten.MaskinportenTokenProvider
 import tokenprovider.samtykke.SamtykkeTokenProvider
 import tokenprovider.samtykke.SamtykkeJwkProvider
+import tokenprovider.samtykke.SamtykkeWellKnownProvider
 
 private val logger = LoggerFactory.getLogger("main")
 
@@ -40,6 +41,7 @@ fun Application.server() {
     val maskinportenTokenProvider = MaskinportenTokenProvider()
     val samtykkeTokenProvider = SamtykkeTokenProvider()
     val jwkClient = SamtykkeJwkProvider()
+    val wellKnownProvider = SamtykkeWellKnownProvider()
 
     routing {
         route("/maskinporten") {
@@ -53,6 +55,9 @@ fun Application.server() {
             }
             get("/jwk") {
                 call.respond(jwkClient.getJwk())
+            }
+            get(".well-known/oauth-authorization-server") {
+                call.respond(wellKnownProvider.getWellKnownOauth())
             }
         }
         // Internal API
