@@ -11,20 +11,23 @@ import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
 import java.time.LocalDate
+import java.util.Date
 
 class SamtykkeTokenProvider {
     private val jwkSet: JWKSet get() = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText())
     private val rsaKey: RSAKey get() = jwkSet.getKeyByKeyId("samtykke") as RSAKey
 
     fun getToken() :String {
+        val delegatedDate= LocalDate.now().toString()
+        val validToDate = LocalDate.now().plusYears(1).toString()
         return createSignedJWT(rsaKey, JWTClaimsSet.Builder()
             .audience("https://aap-test-token-provider.intern.dev.nav.no")
             .issuer("samtykke")
             .claim("Services", arrayOf("5252_1","5252_1_fraOgMed=01.01.2022","5252_1_tilOgMed=01.01.2024"))
             .claim("OfferedBy", "1") //
             .claim("CoveredBy", "1") //
-            .claim("DelegatedDate", LocalDate.now()) //
-            .claim("ValidToDate", LocalDate.now().plusYears(1)) //
+            .claim("DelegatedDate", delegatedDate) //
+            .claim("ValidToDate", validToDate) //
             .claim("scope", System.getenv()["MASKINPORTEN_SCOPES"])
             .build()
         ).serialize()
