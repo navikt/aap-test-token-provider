@@ -3,4 +3,4 @@ limitsCpu: 1000m
 requestsMemory: 256Mi
 requestsCpu: 500m
 ingresses:
-  - https://aap-maskinporten-client.intern.dev.nav.no
+  - https://aap-test-token-provider.intern.dev.nav.no
