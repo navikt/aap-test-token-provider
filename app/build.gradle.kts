@@ -36,7 +36,7 @@ dependencies {
 
 application {
     // Define the main class for the application.
-    mainClass.set("maskinportern.client.AppKt")
+    mainClass.set("tokenprovider.AppKt")
 }
 
 tasks {

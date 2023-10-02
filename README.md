@@ -1,5 +1,6 @@
-# AAP maskinporten client
-Applikasjon som skal brukes til å teste maskinporten.
+# AAP test token provider
+Enkel app for å gi tokens vi trenger for å teste integrasjoner.
+
 # Komme i gang
 Bruker gradle wrapper, så bare klon og kjør `./gradlew build`
 

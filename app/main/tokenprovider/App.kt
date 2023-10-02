@@ -1,4 +1,4 @@
-package maskinportern.client
+package tokenprovider
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
@@ -12,6 +12,9 @@ import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import org.slf4j.LoggerFactory
+import tokenprovider.makinporten.MaskinportenTokenProvider
+import tokenprovider.samtykke.SamtykkeTokenProvider
+import tokenprovider.samtykke.SamtykkeJwkProvider
 
 private val logger = LoggerFactory.getLogger("main")
 
@@ -34,19 +37,19 @@ fun Application.server() {
         }
     }
 
-    val maskinportenClient = MaskinportenClient(logger)
-    val samtykkeClient = SamtykkeClient()
-    val jwkClient = SamtykkeJwk()
+    val maskinportenTokenProvider = MaskinportenTokenProvider()
+    val samtykkeTokenProvider = SamtykkeTokenProvider()
+    val jwkClient = SamtykkeJwkProvider()
 
     routing {
         route("/maskinporten") {
             get("/token") {
-                call.respond(maskinportenClient.getToken())
+                call.respond(maskinportenTokenProvider.getToken())
             }
         }
         route("/samtykke") {
             get("/token") {
-                call.respond(samtykkeClient.getToken())
+                call.respond(samtykkeTokenProvider.getToken())
             }
             get("/jwk") {
                 call.respond(jwkClient.getJwk())

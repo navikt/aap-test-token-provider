@@ -1,7 +1,6 @@
-package maskinportern.client
+package tokenprovider.samtykke
 
 
-import com.auth0.jwt.algorithms.Algorithm
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
 import com.nimbusds.jose.JWSHeader
@@ -11,11 +10,9 @@ import com.nimbusds.jose.jwk.JWKSet
 import com.nimbusds.jose.jwk.RSAKey
 import com.nimbusds.jwt.JWTClaimsSet
 import com.nimbusds.jwt.SignedJWT
-import io.ktor.util.logging.*
-import org.slf4j.LoggerFactory
 import java.time.LocalDate
 
-class SamtykkeClient() {
+class SamtykkeTokenProvider {
     private val jwkSet: JWKSet get() = JWKSet.parse(this::class.java.getResource("/jwkset.json")!!.readText())
     private val rsaKey: RSAKey get() = jwkSet.getKeyByKeyId("samtykke") as RSAKey
 
@@ -28,7 +25,7 @@ class SamtykkeClient() {
             .claim("CoveredBy", "1") //
             .claim("DelegatedDate", LocalDate.now()) //
             .claim("ValidToDate", LocalDate.now().plusYears(1)) //
-            .claim("scope",System.getenv().get("MASKINPORTEN_SCOPES"))
+            .claim("scope", System.getenv()["MASKINPORTEN_SCOPES"])
             .build()
         ).serialize()
     }

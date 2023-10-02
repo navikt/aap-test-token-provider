@@ -1,4 +1,4 @@
-package maskinportern.client
+package tokenprovider.makinporten
 
 import com.nimbusds.jose.JOSEObjectType
 import com.nimbusds.jose.JWSAlgorithm
@@ -13,8 +13,11 @@ import io.ktor.client.request.*
 import io.ktor.http.*
 import java.util.*
 import io.ktor.util.logging.*
+import org.slf4j.LoggerFactory
 
-class MaskinportenClient(private val log: Logger) {
+private val logger = LoggerFactory.getLogger("MaskinportenTokenProvider")
+
+class MaskinportenTokenProvider {
 
     private val httpClient = HttpClient(io.ktor.client.engine.java.Java)
     suspend fun getToken() :String {
@@ -40,16 +43,16 @@ class MaskinportenClient(private val log: Logger) {
 
             signedJWT.sign(RSASSASigner(rsaKey.toRSAPrivateKey()))
             val kropp = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer" + "&assertion=" + signedJWT.serialize()
-            log.info("kaller maskinporten på $tokenUrl med body: $kropp")
+            logger.info("kaller maskinporten på $tokenUrl med body: $kropp")
             setBody(kropp)
         }} catch (e:Exception){
-            log.error(e)
+            logger.error(e)
             null
         }
 
         val respons = response?.body<String>()
 
-        log.info("Svar fra maskinporten: $respons")
+        logger.info("Svar fra maskinporten: $respons")
         return respons ?: "Bad Token"
     }
 
