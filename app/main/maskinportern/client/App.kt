@@ -24,11 +24,20 @@ fun Application.server() {
     }
 
     val maskinportenClient = MaskinportenClient(logger)
+    val samtykkeClient = SamtykkeClient(logger)
 
     routing {
-        route("/token") {
-            get {
+        route("/maskinporten") {
+            get("/token") {
                 call.respond(maskinportenClient.getToken())
+            }
+        }
+        route("/samtykke") {
+            get("/token") {
+                call.respond(samtykkeClient.getToken())
+            }
+            get("/jwk") {
+                call.respond("public key i jwks format")
             }
         }
         // Internal API
