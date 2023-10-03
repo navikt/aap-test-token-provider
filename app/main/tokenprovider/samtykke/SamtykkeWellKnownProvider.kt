@@ -5,8 +5,8 @@ import com.fasterxml.jackson.annotation.JsonProperty
 class SamtykkeWellKnownProvider {
     fun getWellKnownOauth(): WellKnownOauth {
         return WellKnownOauth(
-            issuer = "http://aap-test-token-provider",
-            jwksUri = "http://aap-test-token-provider/samtykke/jwk",
+            issuer = "http://test-token-provider",
+            jwksUri = "http://test-token-provider/samtykke/jwk",
             responseTypesSupported = arrayOf("code")
         )
     }
