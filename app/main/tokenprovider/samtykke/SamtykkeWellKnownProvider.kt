@@ -2,12 +2,11 @@ package tokenprovider.samtykke
 
 import com.fasterxml.jackson.annotation.JsonProperty
 
-// {"issuer":"https://tt02.altinn.no/","jwks_uri":"https://tt02.altinn.no/api/metadata/jwk","response_types_supported":["code"]}
 class SamtykkeWellKnownProvider {
     fun getWellKnownOauth(): WellKnownOauth {
         return WellKnownOauth(
-            issuer = "https://aap-test-token-provider.intern.dev.nav.no",
-            jwksUri = "https://aap-test-token-provider.intern.dev.nav.no/samtykke/jwk",
+            issuer = "http://aap-test-token-provider",
+            jwksUri = "http://aap-test-token-provider/samtykke/jwk",
             responseTypesSupported = arrayOf("code")
         )
     }
