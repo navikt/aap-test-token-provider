@@ -22,7 +22,7 @@ class SamtykkeTokenProvider {
         val validToDate = LocalDate.now().plusYears(1).toString()
         return createSignedJWT(rsaKey, JWTClaimsSet.Builder()
             .audience("https://aap-test-token-provider.intern.dev.nav.no")
-            .issuer("http://aap-test-token-provider")
+            .issuer("http://test-token-provider")
             .claim("Services", arrayOf("5252_1","5252_1_fraOgMed=01.01.2022","5252_1_tilOgMed=01.01.2024"))
             .claim("OfferedBy", "1") //
             .claim("CoveredBy", "1") //
