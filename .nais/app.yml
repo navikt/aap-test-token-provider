@@ -35,7 +35,7 @@ spec:
     enabled: true
     scopes:
       consumes:
-        - name: "nav:aap:vedtak.read"
+        - name: "nav:aap:afpprivat.read"
   ingresses:
   {{#each ingresses as |url|}}
      - {{ url }}
