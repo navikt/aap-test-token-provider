@@ -46,6 +46,3 @@ spec:
     inbound:
       rules:
         - application: api
-env:
-  - name: AAP_AUDIENCE
-    value: {{maskinporten.audience}}

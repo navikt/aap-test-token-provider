@@ -3,5 +3,5 @@ maskinporten:
   client-id: ${MASKINPORTEN_CLIENT_ID}
   client-jwk: ${MASKINPORTEN_CLIENT_JWK}
   scope: "nav:aap:afpprivat.read"
-  audience: ${AAP_AUDIENCE}
+  audience: "https://aap-api.ekstern.dev.nav.no/"
   issuer: ${MASKINPORTEN_ISSUER}

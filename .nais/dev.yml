@@ -4,6 +4,3 @@ requestsMemory: 256Mi
 requestsCpu: 500m
 ingresses:
   - https://aap-test-token-provider.intern.dev.nav.no
-
-maskinporten:
-  audience: https://aap-api.ekstern.dev.nav.no/
