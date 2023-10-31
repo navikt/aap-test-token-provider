@@ -20,32 +20,34 @@ private val logger = LoggerFactory.getLogger("MaskinportenTokenProvider")
 class MaskinportenTokenProvider {
 
     private val httpClient = HttpClient(io.ktor.client.engine.java.Java)
-    suspend fun getToken() :String {
+    suspend fun getToken(): String {
         val tokenUrl = System.getenv()["MASKINPORTEN_TOKEN_ENDPOINT"]!!
         val response = try {
             httpClient.post(tokenUrl) {
 
-            header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded)
-            val rsaKey = RSAKey.parse(System.getenv()["MASKINPORTEN_CLIENT_JWK"])
-            val signedJWT = SignedJWT(
-                JWSHeader.Builder(JWSAlgorithm.RS256)
-                    .keyID(rsaKey.keyID)
-                    .type(JOSEObjectType.JWT)
-                    .build(),
-                JWTClaimsSet.Builder()
-                    .audience("https://test.maskinporten.no/")
-                    .issuer(System.getenv().get("MASKINPORTEN_CLIENT_ID"))
-                    .claim("scope", System.getenv().get("MASKINPORTEN_SCOPES"))
-                    .issueTime(Date())
-                    .expirationTime(twoMinutesFromDate(Date()))
-                    .build()
-            )
+                header(HttpHeaders.ContentType, ContentType.Application.FormUrlEncoded)
+                val rsaKey = RSAKey.parse(System.getenv()["MASKINPORTEN_CLIENT_JWK"])
+                val signedJWT = SignedJWT(
+                    JWSHeader.Builder(JWSAlgorithm.RS256)
+                        .keyID(rsaKey.keyID)
+                        .type(JOSEObjectType.JWT)
+                        .build(),
+                    JWTClaimsSet.Builder()
+                        .audience("https://test.maskinporten.no/")
+                        .issuer(System.getenv().get("MASKINPORTEN_CLIENT_ID"))
+                        .claim("scope", System.getenv().get("MASKINPORTEN_SCOPES"))
+                        .issueTime(Date())
+                        .expirationTime(twoMinutesFromDate(Date()))
+                        .build()
+                )
 
-            signedJWT.sign(RSASSASigner(rsaKey.toRSAPrivateKey()))
-            val kropp = "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer" + "&assertion=" + signedJWT.serialize()
-            logger.info("kaller maskinporten på $tokenUrl med body: $kropp")
-            setBody(kropp)
-        }} catch (e:Exception){
+                signedJWT.sign(RSASSASigner(rsaKey.toRSAPrivateKey()))
+                val kropp =
+                    "grant_type=urn:ietf:params:oauth:grant-type:jwt-bearer" + "&assertion=" + signedJWT.serialize()
+                logger.info("kaller maskinporten på $tokenUrl med body: $kropp")
+                setBody(kropp)
+            }
+        } catch (e: Exception) {
             logger.error(e)
             null
         }
@@ -56,7 +58,7 @@ class MaskinportenTokenProvider {
         return respons ?: "Bad Token"
     }
 
-    fun twoMinutesFromDate(date: Date) :Date {
+    fun twoMinutesFromDate(date: Date): Date {
         val calendar = Calendar.getInstance()
         calendar.time = date;
         calendar.add(Calendar.MINUTE, 2)
