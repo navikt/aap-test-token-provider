@@ -1,0 +1,7 @@
+maskinporten:
+  token-endpoint-url: ${MASKINPORTEN_TOKEN_ENDPOINT}
+  client-id: ${MASKINPORTEN_CLIENT_ID}
+  client-jwk: ${MASKINPORTEN_CLIENT_JWK}
+  scope: "nav:aap:afpprivat.read"
+  audience: ${AAP_AUDIENCE}
+  issuer: ${MASKINPORTEN_ISSUER}

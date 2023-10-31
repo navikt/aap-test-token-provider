@@ -2,6 +2,7 @@ package tokenprovider
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
+import com.nimbusds.jose.jwk.RSAKey
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -11,6 +12,9 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
+import no.nav.aap.ktor.client.maskinporten.client.HttpClientMaskinportenTokenProvider
+import no.nav.aap.ktor.client.maskinporten.client.MaskinportenConfig
+import no.nav.aap.ktor.config.loadConfig
 import org.slf4j.LoggerFactory
 import tokenprovider.makinporten.MaskinportenTokenProvider
 import tokenprovider.samtykke.SamtykkeTokenProvider
@@ -24,6 +28,8 @@ fun main() {
 }
 
 fun Application.server() {
+    val config = loadConfig<Config>()
+
     install(ContentNegotiation) {
         jackson {
             registerModule(JavaTimeModule())
@@ -42,9 +48,15 @@ fun Application.server() {
     val samtykkeTokenProvider = SamtykkeTokenProvider()
     val jwkClient = SamtykkeJwkProvider()
     val wellKnownProvider = SamtykkeWellKnownProvider()
+    val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
 
     routing {
         route("/maskinporten") {
+            get("/token") {
+                call.respond(maskinporten.getToken())
+            }
+        }
+        route("/maskinporten-mock") {
             get("/token") {
                 call.respond(maskinportenTokenProvider.getToken())
             }
@@ -71,5 +83,27 @@ fun Application.server() {
                 call.respond("Ready")
             }
         }
+    }
+}
+
+internal data class Config(
+    val maskinporten: InternalMaskinportConfig,
+) {
+    internal data class InternalMaskinportConfig(
+        val tokenEndpointUrl: String,
+        val clientId: String,
+        val clientJwk: String,
+        val scope: String,
+        val audience: String,
+        val issuer: String,
+    ) {
+        fun toMaskinportenConfig() = MaskinportenConfig(
+            tokenEndpointUrl = tokenEndpointUrl,
+            clientId = clientId,
+            privateKey = RSAKey.parse(clientJwk),
+            scope = scope,
+            resource = audience,
+            issuer = issuer
+        )
     }
 }
