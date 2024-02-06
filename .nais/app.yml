@@ -36,6 +36,7 @@ spec:
     scopes:
       consumes:
         - name: "nav:aap:afpprivat.read"
+        - name: "nav:aap:afpoffentlig.read"
   ingresses:
   {{#each ingresses as |url|}}
      - {{ url }}

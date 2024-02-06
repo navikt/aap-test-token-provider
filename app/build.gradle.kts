@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktor_version = "2.3.3"
+val ktor_version = "2.3.8"
 
 plugins {
-    kotlin("jvm") version "1.9.0"
-    id("io.ktor.plugin") version "2.3.3"
+    kotlin("jvm") version "1.9.22"
+    id("io.ktor.plugin") version "2.3.8"
     application
 }
 
@@ -30,7 +30,7 @@ dependencies {
     implementation("io.ktor:ktor-server-content-negotiation:$ktor_version")
     implementation("io.ktor:ktor-serialization-jackson:$ktor_version")
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.2")
-    implementation("ch.qos.logback:logback-classic:1.4.11")
+    implementation("ch.qos.logback:logback-classic:1.4.12")
     implementation("com.nimbusds:nimbus-jose-jwt:9.31")
     implementation("com.google.code.gson:gson:2.10.1")
     implementation("net.logstash.logback:logstash-logback-encoder:7.3")
@@ -46,7 +46,7 @@ application {
 
 tasks {
     withType<KotlinCompile> {
-        kotlinOptions.jvmTarget = "20"
+        kotlinOptions.jvmTarget = "21"
     }
     withType<Test> {
         useJUnitPlatform()

@@ -28,7 +28,6 @@ fun main() {
 }
 
 fun Application.server() {
-    val config = loadConfig<Config>()
 
     install(ContentNegotiation) {
         jackson {
@@ -48,19 +47,35 @@ fun Application.server() {
     val samtykkeTokenProvider = SamtykkeTokenProvider()
     val jwkClient = SamtykkeJwkProvider()
     val wellKnownProvider = SamtykkeWellKnownProvider()
-    val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
 
     routing {
         route("/maskinporten") {
-            get("/token") {
+            get("/token/afpprivat") {
+                val config = Config(
+                    maskinporten = Config.InternalMaskinportConfig(
+                        scope = "nav:aap:afpprivat.read"
+                    )
+                )
+                val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
+                call.respond(maskinporten.getToken())
+            }
+            get("/token/afpoffentlig") {
+                val config = Config(
+                    maskinporten = Config.InternalMaskinportConfig(
+                        scope = "nav:aap:afpoffentlig.read"
+                    )
+                )
+                val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
                 call.respond(maskinporten.getToken())
             }
         }
+
         route("/maskinporten-mock") {
             get("/token") {
                 call.respond(maskinportenTokenProvider.getToken())
             }
         }
+
         route("/samtykke") {
             get("/token") {
                 call.respond(samtykkeTokenProvider.getToken())
@@ -90,12 +105,12 @@ internal data class Config(
     val maskinporten: InternalMaskinportConfig,
 ) {
     internal data class InternalMaskinportConfig(
-        val tokenEndpointUrl: String,
-        val clientId: String,
-        val clientJwk: String,
+        val tokenEndpointUrl: String = getEnvVar("MASKINPORTEN_TOKEN_ENDPOINT"),
+        val clientId: String = getEnvVar("MASKINPORTEN_CLIENT_ID"),
+        val clientJwk: String = getEnvVar("MASKINPORTEN_CLIENT_JWK"),
         val scope: String,
-        val audience: String,
-        val issuer: String,
+        val audience: String = "https://aap-api.ekstern.dev.nav.no/",
+        val issuer: String = getEnvVar("MASKINPORTEN_ISSUER"),
     ) {
         fun toMaskinportenConfig() = MaskinportenConfig(
             tokenEndpointUrl = tokenEndpointUrl,
@@ -107,3 +122,5 @@ internal data class Config(
         )
     }
 }
+
+private fun getEnvVar(envar: String) = System.getenv(envar) ?: error("missing envvar $envar")
