@@ -1,8 +1,11 @@
 package tokenprovider
 
+import com.fasterxml.jackson.databind.DeserializationFeature
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
 import com.nimbusds.jose.jwk.RSAKey
+import io.ktor.client.*
+import io.ktor.client.engine.cio.*
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -14,7 +17,6 @@ import io.ktor.server.response.*
 import io.ktor.server.routing.*
 import no.nav.aap.ktor.client.maskinporten.client.HttpClientMaskinportenTokenProvider
 import no.nav.aap.ktor.client.maskinporten.client.MaskinportenConfig
-import no.nav.aap.ktor.config.loadConfig
 import org.slf4j.LoggerFactory
 import tokenprovider.makinporten.MaskinportenTokenProvider
 import tokenprovider.samtykke.SamtykkeTokenProvider
@@ -65,7 +67,10 @@ fun Application.server() {
                         scope = "nav:aap:afpoffentlig.read"
                     )
                 )
-                val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
+                val maskinporten = HttpClientMaskinportenTokenProvider(
+                    config.maskinporten.toMaskinportenConfig(),
+                    loggingHttpClient
+                )
                 call.respond(maskinporten.getToken())
             }
         }
