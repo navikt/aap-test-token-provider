@@ -34,14 +34,13 @@ jobs:
           docker push ghcr.io/navikt/${{ github.repository }} --all-tags
 
   deploy-dev:
+    permissions:
+      contents: read
+      id-token: write
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v4
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          PRINT_PAYLOAD: true
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/app.yml
-          VARS: .nais/dev.yml
+    uses: navikt/aap-workflows/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      cluster: dev-gcp
+      manifest: .nais/app.yml
+      vars: .nais/dev.yml
