@@ -6,9 +6,6 @@ on:
 
 permissions: write-all
 
-env:
-  IMAGE: ghcr.io/navikt/${{ github.repository }}:${{ github.sha }}
-
 jobs:
   build:
     runs-on: ubuntu-latest
