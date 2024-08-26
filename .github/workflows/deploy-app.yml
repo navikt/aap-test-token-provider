@@ -14,14 +14,25 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v4
-      - uses: actions/setup-java@v3
+      - uses: actions/setup-java@v4.2.2
         with:
           java-version: 21
           distribution: 'temurin'
 
-      - uses: gradle/gradle-build-action@v2.8.0
+      - uses: gradle/actions/setup-gradle@v3 
         with:
-          arguments: test app:buildFatJar --continue --no-daemon --configuration-cache
+          # Generate and submit a dependency graph (transitive dependencies)
+          dependency-graph: generate-and-submit
+
+      - run: ./gradlew test app:buildFatJar --continue --no-daemon --configuration-cache
+
+      - uses: dorny/test-reporter@v1.9.1
+        if: success() || failure()
+        with:
+          name: test
+          path: "**/build/test-results/test/TEST-*.xml"
+          reporter: java-junit
+          token: ${{ secrets.GITHUB_TOKEN }}
 
       - name: Push docker image to GAR
         uses: nais/docker-build-push@v0
