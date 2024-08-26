@@ -33,6 +33,14 @@ jobs:
           docker build --pull --tag ${{ env.IMAGE }} --tag ghcr.io/${{ github.repository }}:latest .
           docker push ghcr.io/navikt/${{ github.repository }} --all-tags
 
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
+        id: docker-build-push
+        with:
+          team: aap
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+
   deploy-dev:
     needs: build
     runs-on: ubuntu-latest
