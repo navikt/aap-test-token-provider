@@ -13,7 +13,7 @@ repositories {
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
-val aapLibVersion = "3.7.161"
+val aapLibVersion = "3.7.162"
 
 dependencies {
     implementation("com.github.navikt.aap-libs:ktor-auth-maskinporten:$aapLibVersion")
