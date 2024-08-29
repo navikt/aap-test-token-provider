@@ -4,7 +4,7 @@ val ktor_version = "2.3.12"
 
 plugins {
     kotlin("jvm") version "1.9.22"
-    id("io.ktor.plugin") version "2.3.8"
+    id("io.ktor.plugin") version "2.3.12"
     application
 }
 
