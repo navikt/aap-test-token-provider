@@ -39,7 +39,7 @@ dependencies {
     implementation("ch.qos.logback:logback-classic:1.5.7")
     implementation("com.nimbusds:nimbus-jose-jwt:9.40")
     implementation("com.google.code.gson:gson:2.11.0")
-    implementation("net.logstash.logback:logstash-logback-encoder:7.3")
+    implementation("net.logstash.logback:logstash-logback-encoder:8.0")
     implementation("io.ktor:ktor-server-call-logging-jvm:2.3.12")
 
     testImplementation(kotlin("test"))
