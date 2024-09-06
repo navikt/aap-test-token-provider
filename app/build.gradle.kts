@@ -38,7 +38,7 @@ dependencies {
     implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.17.2")
     implementation("ch.qos.logback:logback-classic:1.5.7")
     implementation("com.nimbusds:nimbus-jose-jwt:9.40")
-    implementation("com.google.code.gson:gson:2.10.1")
+    implementation("com.google.code.gson:gson:2.11.0")
     implementation("net.logstash.logback:logstash-logback-encoder:7.3")
     implementation("io.ktor:ktor-server-call-logging-jvm:2.3.12")
 
