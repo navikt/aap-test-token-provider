@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "3.0.0"
+val ktorVersion = "2.3.9"
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("io.ktor.plugin") version "3.0.0"
+    id("io.ktor.plugin") version "2.3.9"
     application
 }
 
