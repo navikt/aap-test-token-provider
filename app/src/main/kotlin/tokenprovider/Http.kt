@@ -21,7 +21,7 @@ val loggingHttpClient = HttpClient(CIO) {
     }
 
     install(Logging) {
-        logger = object: Logger {
+        logger = object : Logger {
             override fun log(message: String) {
                 securelogger.info(message)
             }

@@ -2,7 +2,6 @@ package tokenprovider
 
 import com.fasterxml.jackson.databind.SerializationFeature
 import com.fasterxml.jackson.datatype.jsr310.JavaTimeModule
-import com.nimbusds.jose.jwk.RSAKey
 import io.ktor.http.*
 import io.ktor.serialization.jackson.*
 import io.ktor.server.application.*
@@ -12,8 +11,8 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import no.nav.aap.ktor.client.maskinporten.client.HttpClientMaskinportenTokenProvider
-import no.nav.aap.ktor.client.maskinporten.client.MaskinportenConfig
+import no.nav.aap.ktor.client.auth.maskinporten.HttpClientMaskinportenTokenProvider
+import no.nav.aap.ktor.client.auth.maskinporten.MaskinportenConfig
 import org.slf4j.LoggerFactory
 import tokenprovider.makinporten.MaskinportenTokenProvider
 import tokenprovider.samtykke.SamtykkeJwkProvider
@@ -23,10 +22,24 @@ import tokenprovider.samtykke.SamtykkeWellKnownProvider
 private val logger = LoggerFactory.getLogger("main")
 
 fun main() {
-    embeddedServer(Netty, port = 8080, module = Application::server).start(wait = true)
+    embeddedServer(Netty, port = 8080, module = {
+        server(
+            Config.InternalMaskinportConfig(
+                scope = "nav:aap:afpprivat.read"
+            ), Config.InternalMaskinportConfig(
+                scope = "nav:aap:afpoffentlig.read"
+            )
+        )
+    }).start(wait = true)
+    Thread.currentThread().setUncaughtExceptionHandler { _, e ->
+        logger.error("Uhåndtert feil", e)
+    }
 }
 
-fun Application.server() {
+fun Application.server(
+    maskinporten2: Config.InternalMaskinportConfig,
+    maskinporten1: Config.InternalMaskinportConfig
+) {
 
     install(ContentNegotiation) {
         jackson {
@@ -51,18 +64,15 @@ fun Application.server() {
         route("/maskinporten") {
             get("/token/afpprivat") {
                 val config = Config(
-                    maskinporten = Config.InternalMaskinportConfig(
-                        scope = "nav:aap:afpprivat.read"
-                    )
+                    maskinporten = maskinporten2
                 )
-                val maskinporten = HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
+                val maskinporten =
+                    HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
                 call.respond(maskinporten.getToken())
             }
             get("/token/afpoffentlig") {
                 val config = Config(
-                    maskinporten = Config.InternalMaskinportConfig(
-                        scope = "nav:aap:afpoffentlig.read"
-                    )
+                    maskinporten = maskinporten1
                 )
                 val maskinporten = HttpClientMaskinportenTokenProvider(
                     config.maskinporten.toMaskinportenConfig(),
@@ -103,10 +113,10 @@ fun Application.server() {
     }
 }
 
-internal data class Config(
+data class Config(
     val maskinporten: InternalMaskinportConfig,
 ) {
-    internal data class InternalMaskinportConfig(
+    data class InternalMaskinportConfig(
         val tokenEndpointUrl: String = getEnvVar("MASKINPORTEN_TOKEN_ENDPOINT"),
         val clientId: String = getEnvVar("MASKINPORTEN_CLIENT_ID"),
         val clientJwk: String = getEnvVar("MASKINPORTEN_CLIENT_JWK"),
@@ -117,7 +127,7 @@ internal data class Config(
         fun toMaskinportenConfig() = MaskinportenConfig(
             tokenEndpointUrl = tokenEndpointUrl,
             clientId = clientId,
-            privateKey = RSAKey.parse(clientJwk),
+            privateKey = clientJwk,
             scope = scope,
             resource = audience,
             issuer = issuer

@@ -11,9 +11,9 @@ import io.ktor.client.*
 import io.ktor.client.call.*
 import io.ktor.client.request.*
 import io.ktor.http.*
-import java.util.*
 import io.ktor.util.logging.*
 import org.slf4j.LoggerFactory
+import java.util.*
 
 private val logger = LoggerFactory.getLogger("MaskinportenTokenProvider")
 

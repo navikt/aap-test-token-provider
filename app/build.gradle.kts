@@ -1,10 +1,10 @@
 import org.jetbrains.kotlin.gradle.tasks.KotlinCompile
 
-val ktorVersion = "2.3.9"
+val ktorVersion = "3.0.0"
 
 plugins {
     kotlin("jvm") version "2.0.21"
-    id("io.ktor.plugin") version "2.3.9"
+    id("io.ktor.plugin") version "3.0.0"
     application
 }
 
@@ -13,11 +13,10 @@ repositories {
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
-val aapLibVersion = "3.7.162"
+val aapLibVersion = "5.0.23"
 
 dependencies {
-    implementation("com.github.navikt.aap-libs:ktor-auth-maskinporten:$aapLibVersion")
-    implementation("com.github.navikt.aap-libs:ktor-utils:$aapLibVersion")
+    implementation("com.github.navikt.aap-libs:ktor-auth:$aapLibVersion")
 
     implementation("io.ktor:ktor-client-auth:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
@@ -43,6 +42,8 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging-jvm:3.0.0")
 
     testImplementation(kotlin("test"))
+    testImplementation("org.assertj:assertj-core:3.26.3")
+    testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 }
 
 application {
