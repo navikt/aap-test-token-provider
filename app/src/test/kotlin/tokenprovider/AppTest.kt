@@ -47,7 +47,42 @@ class AppTest {
                 )
             }
 
-            val response = client.get("/maskinporten/token/afpoffentlig")
+            val response = client.get("/maskinporten/token/afpprivat/maskinporten/token/afpoffentlig")
+
+            assertThat(response.status.value).isEqualTo(response.status.value)
+        }
+
+        azureFake.close()
+    }
+
+    @Test
+    fun `funker å be om toke for afpoffentlig`() {
+        val azureFake = AzureFake()
+
+        azureFake.start()
+
+
+        testApplication {
+            application {
+                server(
+                    Config.InternalMaskinportConfig(
+                        scope = "nav:aap:afpprivat.read",
+                        tokenEndpointUrl = "xxx",
+                        clientId = "123",
+                        clientJwk = AZURE_JWK,
+                        issuer = "issuer"
+                    ),
+                    Config.InternalMaskinportConfig(
+                        scope = "nav:aap:afpoffentlig.read",
+                        tokenEndpointUrl = "http://localhost:${azureFake.port()}/jwks",
+                        clientId = "123",
+                        clientJwk = AZURE_JWK,
+                        issuer = "issuer"
+                    )
+                )
+            }
+
+            val response = client.get("/maskinporten/token/afpprivat")
 
             assertThat(response.status.value).isEqualTo(response.status.value)
         }
