@@ -45,7 +45,7 @@ spec:
       consumes:
         - name: "nav:aap:afpprivat.read"
         - name: "nav:aap:afpoffentlig.read"
-        - name: "nav:aap:tp-ordningen.read"
+        - name: "nav:aap:tpordningen.read"
   ingresses:
   {{#each ingresses as |url|}}
      - {{ url }}
