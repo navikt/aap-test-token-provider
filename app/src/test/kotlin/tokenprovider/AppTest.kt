@@ -43,11 +43,19 @@ class AppTest {
                         clientId = "123",
                         clientJwk = AZURE_JWK,
                         issuer = "issuer"
+                    ),
+                    Config.InternalMaskinportConfig(
+                        scope = "nav:aap:tpordningen.read",
+                        tokenEndpointUrl = "http://localhost:${azureFake.port()}/jwks",
+                        clientId = "123",
+                        clientJwk = AZURE_JWK,
+                        issuer = "issuer"
                     )
                 )
             }
 
-            val response = client.get("/maskinporten/token/afpprivat/maskinporten/token/afpoffentlig")
+            val response =
+                client.get("/maskinporten/token/afpprivat/maskinporten/token/afpoffentlig")
 
             assertThat(response.status.value).isEqualTo(response.status.value)
         }
@@ -74,6 +82,13 @@ class AppTest {
                     ),
                     Config.InternalMaskinportConfig(
                         scope = "nav:aap:afpoffentlig.read",
+                        tokenEndpointUrl = "http://localhost:${azureFake.port()}/jwks",
+                        clientId = "123",
+                        clientJwk = AZURE_JWK,
+                        issuer = "issuer"
+                    ),
+                    Config.InternalMaskinportConfig(
+                        scope = "nav:aap:tpordningen.read",
                         tokenEndpointUrl = "http://localhost:${azureFake.port()}/jwks",
                         clientId = "123",
                         clientJwk = AZURE_JWK,

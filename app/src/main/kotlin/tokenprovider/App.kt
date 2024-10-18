@@ -28,6 +28,9 @@ fun main() {
                 scope = "nav:aap:afpprivat.read"
             ), Config.InternalMaskinportConfig(
                 scope = "nav:aap:afpoffentlig.read"
+            ),
+            Config.InternalMaskinportConfig(
+                scope = "nav:aap:afpoffentlig.read"
             )
         )
     }).start(wait = true)
@@ -37,8 +40,9 @@ fun main() {
 }
 
 fun Application.server(
-    maskinporten2: Config.InternalMaskinportConfig,
-    maskinporten1: Config.InternalMaskinportConfig
+    afpPrivatConfig: Config.InternalMaskinportConfig,
+    afpOffentligConfig: Config.InternalMaskinportConfig,
+    tpordningenConfig: Config.InternalMaskinportConfig
 ) {
 
     install(ContentNegotiation) {
@@ -64,7 +68,7 @@ fun Application.server(
         route("/maskinporten") {
             get("/token/afpprivat") {
                 val config = Config(
-                    maskinporten = maskinporten2
+                    maskinporten = afpPrivatConfig
                 )
                 val maskinporten =
                     HttpClientMaskinportenTokenProvider(config.maskinporten.toMaskinportenConfig())
@@ -72,7 +76,17 @@ fun Application.server(
             }
             get("/token/afpoffentlig") {
                 val config = Config(
-                    maskinporten = maskinporten1
+                    maskinporten = afpOffentligConfig
+                )
+                val maskinporten = HttpClientMaskinportenTokenProvider(
+                    config.maskinporten.toMaskinportenConfig(),
+                    loggingHttpClient
+                )
+                call.respond(maskinporten.getToken())
+            }
+            get("/token/tpordningen") {
+                val config = Config(
+                    maskinporten = tpordningenConfig
                 )
                 val maskinporten = HttpClientMaskinportenTokenProvider(
                     config.maskinporten.toMaskinportenConfig(),
