@@ -30,7 +30,7 @@ fun main() {
                 scope = "nav:aap:afpoffentlig.read"
             ),
             Config.InternalMaskinportConfig(
-                scope = "nav:aap:afpoffentlig.read"
+                scope = "nav:aap:tpordningen.read"
             )
         )
     }).start(wait = true)
