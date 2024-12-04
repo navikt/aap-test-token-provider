@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val ktorVersion = "3.0.1"
+val ktorVersion = "3.0.2"
 
 plugins {
     kotlin("jvm") version "2.1.0"
