@@ -13,7 +13,7 @@ repositories {
     maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
-val aapLibVersion = "5.0.24"
+val aapLibVersion = "5.0.25"
 
 dependencies {
     implementation("com.github.navikt.aap-libs:ktor-auth:$aapLibVersion")
@@ -27,6 +27,9 @@ dependencies {
 
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
+    constraints {
+        implementation("io.netty:netty-common:4.1.115.Final")
+    }
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
     implementation("io.ktor:ktor-client-java:$ktorVersion")
