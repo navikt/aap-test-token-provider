@@ -45,7 +45,7 @@ dependencies {
     implementation("io.ktor:ktor-server-call-logging-jvm:3.0.3")
 
     testImplementation(kotlin("test"))
-    testImplementation("org.assertj:assertj-core:3.27.0")
+    testImplementation("org.assertj:assertj-core:3.27.1")
     testImplementation("io.ktor:ktor-server-test-host:$ktorVersion")
 }
 
