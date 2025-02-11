@@ -28,7 +28,7 @@ dependencies {
     implementation("io.ktor:ktor-server-core-jvm:$ktorVersion")
     implementation("io.ktor:ktor-server-netty-jvm:$ktorVersion")
     constraints {
-        implementation("io.netty:netty-common:4.1.117.Final")
+        implementation("io.netty:netty-common:4.1.118.Final")
     }
     implementation("io.ktor:ktor-client-core:$ktorVersion")
     implementation("io.ktor:ktor-server-auth-jwt:$ktorVersion")
