@@ -42,7 +42,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:10.0.1")
     implementation("com.google.code.gson:gson:2.12.1")
     implementation("net.logstash.logback:logstash-logback-encoder:8.0")
-    implementation("io.ktor:ktor-server-call-logging-jvm:3.1.0")
+    implementation("io.ktor:ktor-server-call-logging-jvm:3.1.1")
 
     testImplementation(kotlin("test"))
     testImplementation("org.assertj:assertj-core:3.27.3")
