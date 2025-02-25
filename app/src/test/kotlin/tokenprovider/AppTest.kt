@@ -97,7 +97,7 @@ class AppTest {
                 )
             }
 
-            val response = client.get("/maskinporten/token/afpprivat")
+            val response = client.get("/maskinporten/token/tpordningen")
 
             assertThat(response.status.value).isEqualTo(response.status.value)
         }

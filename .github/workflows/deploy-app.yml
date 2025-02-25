@@ -21,7 +21,7 @@ jobs:
           # Generate and submit a dependency graph (transitive dependencies)
           dependency-graph: generate-and-submit
 
-      - run: ./gradlew test app:buildFatJar --continue --no-daemon --configuration-cache
+      - run: ./gradlew test app:buildFatJar --continue --configuration-cache
 
       - uses: dorny/test-reporter@v1.9.1
         if: success() || failure()

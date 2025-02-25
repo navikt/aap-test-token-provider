@@ -15,7 +15,7 @@ jobs:
 
       - uses: gradle/gradle-build-action@v3.5.0
         with:
-          arguments: test app:buildFatJar --continue --no-daemon --configuration-cache
+          arguments: test app:buildFatJar --continue --configuration-cache
 
   merge:
     if: ${{ github.actor == 'dependabot[bot]' }}
