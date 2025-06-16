@@ -37,7 +37,7 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.0")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.19.1")
     implementation("ch.qos.logback:logback-classic:1.5.18")
     implementation("com.nimbusds:nimbus-jose-jwt:10.3")
     implementation("com.google.code.gson:gson:2.13.1")
