@@ -11,9 +11,9 @@ import io.ktor.server.plugins.contentnegotiation.*
 import io.ktor.server.plugins.statuspages.*
 import io.ktor.server.response.*
 import io.ktor.server.routing.*
-import no.nav.aap.ktor.client.auth.maskinporten.HttpClientMaskinportenTokenProvider
-import no.nav.aap.ktor.client.auth.maskinporten.MaskinportenConfig
 import org.slf4j.LoggerFactory
+import tokenprovider.makinporten.HttpClientMaskinportenTokenProvider
+import tokenprovider.makinporten.MaskinportenConfig
 import tokenprovider.makinporten.MaskinportenTokenProvider
 import tokenprovider.samtykke.SamtykkeJwkProvider
 import tokenprovider.samtykke.SamtykkeTokenProvider
