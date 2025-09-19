@@ -35,7 +35,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:10.5")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("net.logstash.logback:logstash-logback-encoder:8.1")
-    implementation("io.ktor:ktor-server-call-logging-jvm:3.2.3")
+    implementation("io.ktor:ktor-server-call-logging-jvm:3.3.0")
 
     testImplementation(kotlin("test"))
     testImplementation("org.assertj:assertj-core:3.27.5")
