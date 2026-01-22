@@ -1,9 +1,11 @@
-val ktorVersion = "3.3.3"
+import org.jetbrains.kotlin.gradle.dsl.JvmTarget
+
+val ktorVersion = "3.4.0"
 
 plugins {
     id("aap.conventions")
     kotlin("jvm")
-    id("io.ktor.plugin") version "3.3.3"
+    id("io.ktor.plugin") version "3.4.0"
     application
 }
 
@@ -24,8 +26,8 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.20.1")
-    implementation("ch.qos.logback:logback-classic:1.5.24")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.0")
+    implementation("ch.qos.logback:logback-classic:1.5.25")
     implementation("com.nimbusds:nimbus-jose-jwt:10.7")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
