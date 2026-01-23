@@ -3,14 +3,10 @@ import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 val ktorVersion = "3.4.0"
 
 plugins {
-    kotlin("jvm") version "2.3.0"
+    id("aap.conventions")
+    kotlin("jvm")
     id("io.ktor.plugin") version "3.3.3"
     application
-}
-
-repositories {
-    mavenCentral()
-    maven("https://github-package-registry-mirror.gc.nav.no/cached/maven-release")
 }
 
 dependencies {
@@ -46,21 +42,3 @@ application {
     // Define the main class for the application.
     mainClass.set("tokenprovider.AppKt")
 }
-
-tasks {
-    withType<Test> {
-        useJUnitPlatform()
-    }
-}
-
-kotlin {
-    jvmToolchain(21)
-    compilerOptions {
-        jvmTarget.set(JvmTarget.JVM_21)
-    }
-}
-
-kotlin.sourceSets["main"].kotlin.srcDirs("main")
-kotlin.sourceSets["test"].kotlin.srcDirs("test")
-sourceSets["main"].resources.srcDirs("main")
-sourceSets["test"].resources.srcDirs("test")
