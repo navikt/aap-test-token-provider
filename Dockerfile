@@ -1,4 +1,4 @@
-FROM gcr.io/distroless/java21-debian12:nonroot
+FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jdk:openjdk-25
 
 WORKDIR /app
 COPY /app/build/libs/app-all.jar /app/app.jar
@@ -10,4 +10,4 @@ CMD ["app.jar"]
 
 # use -XX:+UseParallelGC when 2 CPUs and 4G RAM.
 # use G1GC when using more than 4G RAM and/or more than 2 CPUs
-# use -XX:ActiveProcessorCount=2 if less than 1G RAM.
+
