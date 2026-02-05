@@ -9,32 +9,11 @@ on:
         type: string
         description: jdk version
         default: 25
-
-      cluster:
-        required: true
-        type: string
-        description: https://docs.nais.io/clusters/gcp/
-      vars:
+      debug:
         required: false
-        type: string
-        description: Template file of environments variables to be interpolated in the manifest.
-        default: ""
-      tag:
-        required: false
-        type: string
-        default: ${{ github.sha }}
-        description: Git tag used when published to GAR (nais/docker-build-push)
-      manifest:
-        required: false
-        type: string
-        default: .nais/app.yml
-        description: NAIS Application resource manifest
-      imageSuffix:
-        required: false
-        type: string
-        default: ""
-        description: Suffix to append to the image name
-
+        type: boolean
+        description: turn on debug logs
+        default: false
 permissions: write-all
 
 jobs:
@@ -70,45 +49,28 @@ jobs:
           reporter: java-junit
           token: ${{ secrets.GITHUB_TOKEN }}
 
-      - name: Publish Test Report
-        uses: mikepenz/action-junit-report@v6
-        if: success() || failure() # always run even if the previous step fails
-        with:
-          report_paths: '**/build/test-results/test/TEST-*.xml'
-
-      - name: Store reports
-        if: failure()
-        uses: actions/upload-artifact@v6
-        with:
-          name: reports
-          path: |
-            **/build/reports/
-            **/build/test-results/
-            **/build/test-logs/
-
-      - uses: nais/docker-build-push@v0
+      - name: Push docker image to GAR
+        uses: nais/docker-build-push@v0
         env: # Workaround for rate limiting inntil denne er fikset: https://github.com/aquasecurity/trivy-action/issues/389
           TRIVY_JAVA_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-java-db:1"
+        id: docker-build-push
         with:
           team: aap
-          tag: ${{ github.sha }}
-          build_args: |
-            APP_NAME=${{ github.event.repository.name }}
+          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
+          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
+    outputs:
+      image: ${{ steps.docker-build-push.outputs.image }}
 
   deploy-dev:
     needs: build
     runs-on: ubuntu-latest
-    environment: ${{inputs.cluster}}
     steps:
       - uses: actions/checkout@v6
-      - uses: nais/login@v0
-        id: login
-        with:
-          team: aap
-      - uses: nais/deploy/actions/deploy@v2
+      - uses: nais/deploy/actions/deploy@v1
         env:
           PRINT_PAYLOAD: true
-          CLUSTER: ${{ inputs.cluster }}
-          RESOURCE: ${{ inputs.manifest }}
-          VARS: ${{ inputs.vars }}
-          VAR: image=${{ steps.login.outputs.registry }}/${{ github.event.repository.name }}${{ inputs.imageSuffix }}:${{ inputs.tag }}
+          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
+          CLUSTER: dev-gcp
+          RESOURCE: .nais/app.yml
+          VARS: .nais/dev.yml
+          VAR: image=${{ needs.build.outputs.image }}
