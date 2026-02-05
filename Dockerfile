@@ -1,5 +1,6 @@
 FROM gcr.io/distroless/java21-debian12:nonroot
-# FIXME: deploy feiler med chainguard. Trolig også nødvendig å oppdatere til aap-workflows. 
+# FIXME: deploy feiler med chainguard
+# FROM europe-north1-docker.pkg.dev/cgr-nav/pull-through/nav.no/jdk:openjdk-25
 
 WORKDIR /app
 COPY /app/build/libs/app-all.jar /app/app.jar
