@@ -34,5 +34,6 @@ jobs:
     uses: navikt/aap-workflows/.github/workflows/deploy.yml@main
     secrets: inherit
     with:
+      vars: .nais/dev.yml
+      manifest: .nais/app.yml
       cluster: dev-gcp
-      manifest: .nais/app-dev.yml
