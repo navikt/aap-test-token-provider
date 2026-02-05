@@ -1,61 +1,38 @@
 name: Deploy maskinporten-client
 
 on:
+  workflow_dispatch:
+    inputs:
+      cluster:
+        description: Cluster
+        required: true
+        default: dev-gcp
+        type: choice
+        options:
+          - dev-gcp
   push:
     branches: [ main ]
 permissions: write-all
 
 jobs:
   build:
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-
-      - uses: actions/setup-java@v5.2.0
-        with:
-          java-version: 25
-          distribution: "temurin"
-
-      - uses: gradle/actions/setup-gradle@v5
-        with:
-          # Generate and submit a dependency graph (transitive dependencies)
-          dependency-graph: generate-and-submit
-          gradle-version: wrapper
-
-      - run: ./gradlew test app:buildFatJar --continue
-        env:
-          GITHUB_PASSWORD: ${{ secrets.READER_TOKEN }}
-
-      - uses: dorny/test-reporter@v2.5.0
-        if: success() || failure()
-        with:
-          name: test
-          path: "**/build/test-results/test/TEST-*.xml"
-          reporter: java-junit
-          token: ${{ secrets.GITHUB_TOKEN }}
-
-      - name: Push docker image to GAR
-        uses: nais/docker-build-push@v0
-        env: # Workaround for rate limiting inntil denne er fikset: https://github.com/aquasecurity/trivy-action/issues/389
-          TRIVY_JAVA_DB_REPOSITORY: "public.ecr.aws/aquasecurity/trivy-java-db:1"
-        id: docker-build-push
-        with:
-          team: aap
-          identity_provider: ${{ secrets.NAIS_WORKLOAD_IDENTITY_PROVIDER }}
-          project_id: ${{ vars.NAIS_MANAGEMENT_PROJECT_ID }}
-    outputs:
-      image: ${{ steps.docker-build-push.outputs.image }}
+    permissions:
+      contents: write
+      actions: read
+      checks: write
+      id-token: write
+    uses: navikt/aap-workflows/.github/workflows/gradle-build.yml@main
+    secrets: inherit
 
   deploy-dev:
+    permissions:
+      contents: read
+      id-token: write
     needs: build
-    runs-on: ubuntu-latest
-    steps:
-      - uses: actions/checkout@v6
-      - uses: nais/deploy/actions/deploy@v1
-        env:
-          PRINT_PAYLOAD: true
-          APIKEY: ${{ secrets.NAIS_DEPLOY_APIKEY }}
-          CLUSTER: dev-gcp
-          RESOURCE: .nais/app.yml
-          VARS: .nais/dev.yml
-          VAR: image=${{ needs.build.outputs.image }}
+    concurrency:
+      group: deploy-dev
+    uses: navikt/aap-workflows/.github/workflows/deploy.yml@main
+    secrets: inherit
+    with:
+      cluster: dev-gcp
+      manifest: .nais/app-dev.yml
