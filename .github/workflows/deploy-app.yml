@@ -13,7 +13,7 @@ jobs:
       - uses: actions/checkout@v6
       - uses: actions/setup-java@v5.2.0
         with:
-          java-version: ${{ inputs.jdk }}
+          java-version: 25
           distribution: "temurin"
 
       - uses: gradle/actions/setup-gradle@v5
