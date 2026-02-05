@@ -3,6 +3,7 @@ name: Deploy maskinporten-client
 on:
   push:
     branches: [ main ]
+  workflow_call:
     inputs:
       jdk:
         required: false
