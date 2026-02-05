@@ -3,18 +3,6 @@ name: Deploy maskinporten-client
 on:
   push:
     branches: [ main ]
-  workflow_call:
-    inputs:
-      jdk:
-        required: false
-        type: string
-        description: jdk version
-        default: 25
-      debug:
-        required: false
-        type: boolean
-        description: turn on debug logs
-        default: false
 permissions: write-all
 
 jobs:
@@ -25,7 +13,7 @@ jobs:
 
       - uses: actions/setup-java@v5.2.0
         with:
-          java-version: ${{ inputs.jdk }}
+          java-version: 25
           distribution: "temurin"
 
       - uses: gradle/actions/setup-gradle@v5
@@ -33,10 +21,6 @@ jobs:
           # Generate and submit a dependency graph (transitive dependencies)
           dependency-graph: generate-and-submit
           gradle-version: wrapper
-        env:
-          # Reports all cache entries saved/restored.
-          # Some parallell cache operations will be disabled when debug is enabled
-          GRADLE_BUILD_ACTION_CACHE_DEBUG_ENABLED: ${{ inputs.debug }}
 
       - run: ./gradlew test app:buildFatJar --continue
         env:
