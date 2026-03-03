@@ -1,6 +1,6 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val ktorVersion = "3.4.0"
+val ktorVersion = "3.4.1"
 
 plugins {
     id("aap.conventions")
