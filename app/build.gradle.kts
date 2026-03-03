@@ -5,7 +5,7 @@ val ktorVersion = "3.4.0"
 plugins {
     id("aap.conventions")
     kotlin("jvm")
-    id("io.ktor.plugin") version "3.4.0"
+    id("io.ktor.plugin") version "3.4.1"
     application
 }
 
@@ -31,7 +31,7 @@ dependencies {
     implementation("com.nimbusds:nimbus-jose-jwt:10.8")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
-    implementation("io.ktor:ktor-server-call-logging-jvm:3.4.0")
+    implementation("io.ktor:ktor-server-call-logging-jvm:3.4.1")
 
     testImplementation(kotlin("test"))
     testImplementation("org.assertj:assertj-core:3.27.7")
