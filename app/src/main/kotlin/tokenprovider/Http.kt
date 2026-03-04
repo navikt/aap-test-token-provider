@@ -10,7 +10,7 @@ import io.ktor.serialization.jackson.*
 import org.slf4j.LoggerFactory
 
 
-private val securelogger = LoggerFactory.getLogger("secureLog")
+private val log = LoggerFactory.getLogger("HttpClient")
 
 val loggingHttpClient = HttpClient(CIO) {
     install(ContentNegotiation) {
@@ -23,7 +23,7 @@ val loggingHttpClient = HttpClient(CIO) {
     install(Logging) {
         logger = object : Logger {
             override fun log(message: String) {
-                securelogger.info(message)
+                log.info(message)
             }
 
         }

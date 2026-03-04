@@ -50,8 +50,6 @@ spec:
   {{#each ingresses as |url|}}
      - {{ url }}
   {{/each }}
-  secureLogs:
-    enabled: true
   accessPolicy:
     inbound:
       rules:

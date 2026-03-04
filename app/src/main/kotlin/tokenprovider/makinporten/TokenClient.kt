@@ -23,7 +23,7 @@ internal val defaultHttpClient = HttpClient(CIO) {
 
 internal class TokenClient(private val client: HttpClient) {
     private val cache = TokenCache()
-    private val secureLog = LoggerFactory.getLogger("secureLog")
+    private val logger = LoggerFactory.getLogger("logger")
 
     suspend fun getAccessToken(
         tokenEndpoint: String,
@@ -37,7 +37,7 @@ internal class TokenClient(private val client: HttpClient) {
                 setBody(body())
             }.also {
                 if (!it.status.isSuccess()) {
-                    secureLog.warn("Feilet token-kall {}: {}", it.status.value, it.bodyAsText())
+                    logger.warn("Feilet token-kall {}: {}", it.status.value, it.bodyAsText())
                 }
             }.body<Token>().also {
                 cache.add(cacheKey, it)
