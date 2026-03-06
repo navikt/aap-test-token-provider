@@ -15,11 +15,25 @@ updates:
           interval: daily
 
     - package-ecosystem: gradle
+      registries:
+        - maven-github
       directory: /
       schedule:
           interval: daily
-      registries:
-          - maven-github
+      groups:
+        minor:
+          applies-to: version-updates
+          exclude-patterns:
+            - "no.nav.aap*"
+          update-types:
+            - "minor"
+            - "patch"
+        aap:
+          patterns:
+            - "no.nav.aap*"
+        ktor:
+          patterns:
+            - "*ktor*"
 
     - package-ecosystem: docker
       directory: /
