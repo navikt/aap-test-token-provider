@@ -1,11 +1,11 @@
 import org.jetbrains.kotlin.gradle.dsl.JvmTarget
 
-val ktorVersion = "3.4.1"
+val ktorVersion = "3.4.2"
 
 plugins {
     id("aap.conventions")
     kotlin("jvm")
-    id("io.ktor.plugin") version "3.4.1"
+    id("io.ktor.plugin") version "3.4.2"
     application
 }
 
@@ -26,12 +26,12 @@ dependencies {
     implementation("io.ktor:ktor-server-status-pages:$ktorVersion")
     implementation("io.ktor:ktor-server-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-serialization-jackson:$ktorVersion")
-    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.1")
+    implementation("com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.21.2")
     implementation("ch.qos.logback:logback-classic:1.5.32")
     implementation("com.nimbusds:nimbus-jose-jwt:10.8")
     implementation("com.google.code.gson:gson:2.13.2")
     implementation("net.logstash.logback:logstash-logback-encoder:9.0")
-    implementation("io.ktor:ktor-server-call-logging-jvm:3.4.1")
+    implementation("io.ktor:ktor-server-call-logging-jvm:3.4.2")
 
     testImplementation(kotlin("test"))
     testImplementation("org.assertj:assertj-core:3.27.7")
