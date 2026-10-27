@@ -8,6 +8,8 @@ plugins {
 }
 
 dependencies {
+    implementation(platform("io.netty:netty-bom:4.2.17.Final"))
+
     implementation("io.ktor:ktor-client-auth:$ktorVersion")
     implementation("io.ktor:ktor-client-content-negotiation:$ktorVersion")
     implementation("io.ktor:ktor-client-core:$ktorVersion")
