@@ -23,6 +23,8 @@ jobs:
       id-token: write
     uses: navikt/aap-workflows/.github/workflows/gradle-build.yml@main
     secrets: inherit
+    with:
+      jdk: 25
 
   deploy-dev:
     permissions:
